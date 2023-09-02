@@ -1,22 +1,30 @@
 
 
 // blog text starts here
-function showBlogText() {
-  var blogContentDiv = document.getElementById("blogContent");
-  if (blogContentDiv) {
-    var blogText = "Discuss the scope of var, let, and const; Tell us the use cases of null and undefined; What do you mean by REST API?";
-    var lines = blogText.split('; '); // Split the text into lines using the semicolon and space as the delimiter
 
-    // Create a paragraph for each line and append it to the div
+function showBlogText() {
+  // Get the reference to the HTML element with the ID "blogContent"
+  var blogContentDiv = document.getElementById("blogContent");
+  
+  if (blogContentDiv) {
+    // Define the blog text content
+    var blogText = ".Discuss the scope of var, let, and const; .Tell us the use cases of null and undefined; .What do you mean by REST API?";
+    
+    // Split the blog text into lines using the semicolon and space as the delimiter
+    var lines = blogText.split('; ');
+
+    // Create a paragraph element for each line and append it to the "blogContent" div
     lines.forEach(function (line) {
       var paragraph = document.createElement("p");
       paragraph.textContent = line;
       blogContentDiv.appendChild(paragraph);
     });
   } else {
+    // If the "blogContent" div is not found, log an error message
     console.error("Element with ID 'blogContent' not found.");
   }
 }
+
 
 // blog text ends here
 
@@ -69,10 +77,16 @@ const handleLoadVideos = async (categoryId) => {
       const gridContainer = document.createElement("div");
       gridContainer.classList.add(
         "grid",
-        "grid-cols-1", // Set the number of columns to 1 for small screens
-        "md:grid-cols-2", // Set the number of columns to 2 for medium screens and larger
-        "lg:grid-cols-4", // Set the number of columns to 4 for large screens and larger
-        "gap-4" ,// Add some gap between the grid items
+        "grid-cols-1", 
+        "md:grid-cols-2", 
+        "lg:grid-cols-4", 
+        "gap-4" ,
+        "p-4",
+        "mx-auto",
+        
+        
+        
+        // Add some gap between the grid items
         
       );
 
@@ -117,11 +131,7 @@ if (minutes > 0) {
   formattedTime += `${minutes} min ago `;
 }
 
-// if (seconds > 0) {
-//   formattedTime += `${seconds} s`;
-// }
 
-// formattedTime += ' ago';
 
 
 videoCard.innerHTML = `
@@ -141,13 +151,8 @@ videoCard.innerHTML = `
     ${video.authors[0].verified ? '<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs ml-2">Verified</span>' : ''}
   </div>
   <p class="text-gray-500 text-xs">Views: ${video.others.views}</p>
-  <!-- Adjust the class "text-xs" for the desired font size of the "Views" text -->
+  
 `;
-
-
-
-
-
 
 
         // Append each video card to the grid container
@@ -159,41 +164,57 @@ videoCard.innerHTML = `
       // Append the grid container to the card container
       cardContainer.appendChild(gridContainer);
     } 
-   
-    // else if (categoryId === "drawing") {
-    //   // Display an icon and text for the "Drawing" category with no videos
-    //   cardContainer.innerHTML = `
-    //     <div class="flex flex-col items-center justify-center text-gray-500">
-    //       <img src="./Icon.png" alt="No Content Icon">
-    //       <p>Oops! There is no content here.</p>
-    //     </div>
-    //   `;
-    // }
-    else if (categoryId === "drawing") {
-      // Display an icon and text for the "Drawing" category with no videos
+  
+    else if (categoryId === "1005") {
+      // Display additional text content for the "Drawing" category with no videos
       cardContainer.innerHTML = `
         <div class="flex flex-col items-center justify-center text-gray-500">
           <img src="./Icon.png" alt="No Content Icon">
-          <p>Oops! There is no content here.</p>
+          <p>Oops! There is no drawing-related content available at the moment.</p>
+          <p>Check back later for more drawing videos!</p>
         </div>
       `;
+      
     }
-    
-    gridContainer.appendChild(videoCard)
-    
-    
+  
   } catch (error) {
     console.error("Error loading videos:", error);
   }
 };
 
 
-
-
-
-
 // Call the handleCategory function to load video categories
 handleCategory();
 
 // You can replace the categoryId with the one you want to load initially
-handleLoadVideos("1000"); // Replace with the desired category ID
+handleLoadVideos("1005"); // Replace with the desired category ID
+// 
+// sort by view 
+
+// Add a reference to the "Sort by View" button
+const sortButton = document.getElementById("sortButton");
+
+// Function to sort video cards by views in descending order
+function sortVideosByViewsDescending() {
+  // Sort the video data in descending order based on the 'views' property
+  data.data.sort((a, b) => b.others.views - a.others.views);
+
+  // Call the function to display the sorted video cards
+  displaySortedVideos();
+}
+
+// Add a click event listener to the button to trigger the sorting
+sortButton.addEventListener("click", sortVideosByViewsDescending);
+function displaySortedVideos() {
+  const cardContainer = document.getElementById("card-container");
+  cardContainer.innerHTML = "";
+
+  // Iterate through the sorted video data and create and append video cards
+  data.data.forEach((video) => {
+    const videoCard = document.createElement("div");
+    // Create and populate the video card HTML based on the sorted data
+    // ...
+
+    cardContainer.appendChild(videoCard);
+  });
+}
