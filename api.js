@@ -75,14 +75,6 @@ const handleLoadVideos = async (categoryId) => {
         "gap-4" ,// Add some gap between the grid items
         
       );
-//       const gridContainer = document.createElement("div");
-// gridContainer.classList.add(
-//   "flex",            // Add flex display
-//   "flex-wrap",       // Allow the cards to wrap to the next row if needed
-//   "justify-center",  // Center-align horizontally
-//   "items-center"     // Center-align vertically
-// );
-
 
       data.data.forEach((video) => {
         // Create HTML elements for each video card
@@ -97,66 +89,59 @@ const handleLoadVideos = async (categoryId) => {
           "video-card"
           // Add other Tailwind CSS classes as needed
         );
+// Assuming `video.others.posted_date` is a numeric value representing seconds since the epoch
+const postedDateInSeconds = parseInt(video.others.posted_date, 10);
 
-       
-   
- 
-  
+// Convert the seconds to milliseconds for creating a Date object
+const postedDate = new Date(postedDateInSeconds * 1000);
 
+// Get the current date and time
+const currentDate = new Date();
 
+// Calculate the time difference in seconds
+const timeDifferenceInSeconds = Math.floor((currentDate - postedDate) / 1000);
 
+// Calculate hours, minutes, and seconds
+const hours = Math.floor(timeDifferenceInSeconds / 3600);
+const minutes = Math.floor((timeDifferenceInSeconds % 3600) / 60);
+const seconds = timeDifferenceInSeconds % 60;
 
-// videoCard.innerHTML = `
-//   <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
-//   <div class="flex flex-col md:flex-row items-center mb-2">
-//     <div class="md:w-1/4">
-//       <img src="${video.authors[0].profile_picture}" alt="Author Profile Picture" class="w-24 h-24 md:w-12 md:h-12 rounded-full">
-//     </div>
-//     <div class="md:w-3/4 md:ml-3">
-//       <h2 class="text-lg font-semibold">${video.title}</h2>
-//       <p class="text-gray-500">${video.authors[0].profile_name}</p>
-//       ${video.authors[0].verified ? '<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs ml-2">Verified</span>' : ''}
-//     </div>
-//   </div>
-//   <p class="text-gray-500">Views: ${video.others.views}</p>
-//   <p class="text-gray-500">Posted Date: ${video.others.posted_date}</p>
-// `;
-// videoCard.innerHTML = `
-//   <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
-//   <div class="flex items-center mb-2">
-//     <img src="${video.authors[0].profile_picture}" alt="Author Profile Picture" class="w-12 h-12 rounded-full">
-//     <h2 class="text-lg font-semibold ml-2">${video.title}</h2>
-//   </div>
-//   <p class="text-gray-500">${video.authors[0].profile_name}</p>
-//   ${video.authors[0].verified ? '<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs ml-2">Verified</span>' : ''}
-//   <p class="text-gray-500">Views: ${video.others.views}</p>
-// `;
-// videoCard.innerHTML = `
-//   <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
-//   <div class="flex items-center mb-2">
-//     <img src="${video.authors[0].profile_picture}" alt="Author Profile Picture" class="w-12 h-12 rounded-full">
-//     <div class="ml-2">
-//       <div class="flex items-center">
-//         <h2 class="text-lg font-semibold">${video.title}</h2>
-//         ${video.authors[0].verified ? '<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs ml-2">Verified</span>' : ''}
-//       </div>
-//       <p class="text-gray-500">${video.authors[0].profile_name}</p>
-//       <p class="text-gray-500">Views: ${video.others.views}</p>
-//     </div>
-//   </div>
-// `;
+// Create a formatted time string
+let formattedTime = '';
+
+if (hours > 0) {
+  formattedTime += `${hours} hrs `;
+}
+
+if (minutes > 0) {
+  formattedTime += `${minutes} min ago `;
+}
+
+// if (seconds > 0) {
+//   formattedTime += `${seconds} s`;
+// }
+
+// formattedTime += ' ago';
+
 
 videoCard.innerHTML = `
-  <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
+  <div class="relative">
+    <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
+    <p class="absolute bottom-2 right-2 text-white text-xs bg-black bg-opacity-70 px-1">${formattedTime}</p>
+  </div>
+  <!-- ... (other video card content) ... -->
   <div class="flex items-center mb-2">
     <img src="${video.authors[0].profile_picture}" alt="Author Profile Picture" class="w-12 h-12 rounded-full">
-    <h2 class="text-lg font-semibold ml-2">${video.title}</h2>
+    <h2 class="text-sm font-semibold ml-2">${video.title}</h2>
+    <!-- Adjust the class "text-sm" for the desired font size of the title -->
   </div>
   <div class="flex items-center">
-    <p class="text-gray-500">${video.authors[0].profile_name}</p>
+    <p class="text-gray-500 flex-1 text-xs">${video.authors[0].profile_name}</p>
+    <!-- Adjust the class "text-xs" for the desired font size of the author's name -->
     ${video.authors[0].verified ? '<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs ml-2">Verified</span>' : ''}
   </div>
-  <p class="text-gray-500">Views: ${video.others.views}</p>
+  <p class="text-gray-500 text-xs">Views: ${video.others.views}</p>
+  <!-- Adjust the class "text-xs" for the desired font size of the "Views" text -->
 `;
 
 
@@ -164,30 +149,6 @@ videoCard.innerHTML = `
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-      
-      
-      
-      
-      
-      
-
-        
 
         // Append each video card to the grid container
         gridContainer.appendChild(videoCard);
@@ -199,6 +160,15 @@ videoCard.innerHTML = `
       cardContainer.appendChild(gridContainer);
     } 
    
+    // else if (categoryId === "drawing") {
+    //   // Display an icon and text for the "Drawing" category with no videos
+    //   cardContainer.innerHTML = `
+    //     <div class="flex flex-col items-center justify-center text-gray-500">
+    //       <img src="./Icon.png" alt="No Content Icon">
+    //       <p>Oops! There is no content here.</p>
+    //     </div>
+    //   `;
+    // }
     else if (categoryId === "drawing") {
       // Display an icon and text for the "Drawing" category with no videos
       cardContainer.innerHTML = `
@@ -208,6 +178,8 @@ videoCard.innerHTML = `
         </div>
       `;
     }
+    
+    gridContainer.appendChild(videoCard)
     
     
   } catch (error) {
