@@ -1,3 +1,25 @@
+
+
+// blog text starts here
+function showBlogText() {
+  var blogContentDiv = document.getElementById("blogContent");
+  if (blogContentDiv) {
+    var blogText = "Discuss the scope of var, let, and const; Tell us the use cases of null and undefined; What do you mean by REST API?";
+    var lines = blogText.split('; '); // Split the text into lines using the semicolon and space as the delimiter
+
+    // Create a paragraph for each line and append it to the div
+    lines.forEach(function (line) {
+      var paragraph = document.createElement("p");
+      paragraph.textContent = line;
+      blogContentDiv.appendChild(paragraph);
+    });
+  } else {
+    console.error("Element with ID 'blogContent' not found.");
+  }
+}
+
+// blog text ends here
+
 const handleCategory = async () => {
   try {
     // Fetch the list of video categories from your new API
@@ -17,16 +39,6 @@ const handleCategory = async () => {
           <a onclick="handleLoadVideos('${category.category_id}')" class="tab">${category.category}</a>
         `;
         tabContainer.appendChild(div);
-
-        // Display category names directly without clicking (optional)
-        if (category.category_id === "1000") {
-          // You can customize how the "All" category is displayed
-          const allCategoryDiv = document.createElement("div");
-          allCategoryDiv.innerHTML = `
-            <a class="tab">${category.category}</a>
-          `;
-          tabContainer.appendChild(allCategoryDiv);
-        }
       });
     } else {
       console.error("Unexpected data structure in API response:", data);
@@ -35,6 +47,8 @@ const handleCategory = async () => {
     console.error("Error loading video categories:", error);
   }
 };
+
+
 
 
 const handleLoadVideos = async (categoryId) => {
@@ -61,6 +75,14 @@ const handleLoadVideos = async (categoryId) => {
         "gap-4" ,// Add some gap between the grid items
         
       );
+//       const gridContainer = document.createElement("div");
+// gridContainer.classList.add(
+//   "flex",            // Add flex display
+//   "flex-wrap",       // Allow the cards to wrap to the next row if needed
+//   "justify-center",  // Center-align horizontally
+//   "items-center"     // Center-align vertically
+// );
+
 
       data.data.forEach((video) => {
         // Create HTML elements for each video card
@@ -76,14 +98,96 @@ const handleLoadVideos = async (categoryId) => {
           // Add other Tailwind CSS classes as needed
         );
 
-        // Add other elements to the video card (thumbnail, title, etc.)
-        videoCard.innerHTML = `
-          <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
-          <h2 class="text-lg font-semibold">${video.title}</h2>
-          <p class="text-gray-500">Author: ${video.authors[0].profile_name}</p>
-          <p class="text-gray-500">Views: ${video.others.views}</p>
-          <p class="text-gray-500">Posted Date: ${video.others.posted_date}</p>
-        `;
+       
+   
+ 
+  
+
+
+
+
+// videoCard.innerHTML = `
+//   <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
+//   <div class="flex flex-col md:flex-row items-center mb-2">
+//     <div class="md:w-1/4">
+//       <img src="${video.authors[0].profile_picture}" alt="Author Profile Picture" class="w-24 h-24 md:w-12 md:h-12 rounded-full">
+//     </div>
+//     <div class="md:w-3/4 md:ml-3">
+//       <h2 class="text-lg font-semibold">${video.title}</h2>
+//       <p class="text-gray-500">${video.authors[0].profile_name}</p>
+//       ${video.authors[0].verified ? '<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs ml-2">Verified</span>' : ''}
+//     </div>
+//   </div>
+//   <p class="text-gray-500">Views: ${video.others.views}</p>
+//   <p class="text-gray-500">Posted Date: ${video.others.posted_date}</p>
+// `;
+// videoCard.innerHTML = `
+//   <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
+//   <div class="flex items-center mb-2">
+//     <img src="${video.authors[0].profile_picture}" alt="Author Profile Picture" class="w-12 h-12 rounded-full">
+//     <h2 class="text-lg font-semibold ml-2">${video.title}</h2>
+//   </div>
+//   <p class="text-gray-500">${video.authors[0].profile_name}</p>
+//   ${video.authors[0].verified ? '<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs ml-2">Verified</span>' : ''}
+//   <p class="text-gray-500">Views: ${video.others.views}</p>
+// `;
+// videoCard.innerHTML = `
+//   <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
+//   <div class="flex items-center mb-2">
+//     <img src="${video.authors[0].profile_picture}" alt="Author Profile Picture" class="w-12 h-12 rounded-full">
+//     <div class="ml-2">
+//       <div class="flex items-center">
+//         <h2 class="text-lg font-semibold">${video.title}</h2>
+//         ${video.authors[0].verified ? '<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs ml-2">Verified</span>' : ''}
+//       </div>
+//       <p class="text-gray-500">${video.authors[0].profile_name}</p>
+//       <p class="text-gray-500">Views: ${video.others.views}</p>
+//     </div>
+//   </div>
+// `;
+
+videoCard.innerHTML = `
+  <img src="${video.thumbnail}" alt="Video Thumbnail" class="w-full rounded-lg mb-2">
+  <div class="flex items-center mb-2">
+    <img src="${video.authors[0].profile_picture}" alt="Author Profile Picture" class="w-12 h-12 rounded-full">
+    <h2 class="text-lg font-semibold ml-2">${video.title}</h2>
+  </div>
+  <div class="flex items-center">
+    <p class="text-gray-500">${video.authors[0].profile_name}</p>
+    ${video.authors[0].verified ? '<span class="bg-blue-500 text-white px-2 py-1 rounded-full text-xs ml-2">Verified</span>' : ''}
+  </div>
+  <p class="text-gray-500">Views: ${video.others.views}</p>
+`;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+      
+      
+      
+      
+      
+      
+
+        
 
         // Append each video card to the grid container
         gridContainer.appendChild(videoCard);
@@ -93,13 +197,27 @@ const handleLoadVideos = async (categoryId) => {
 
       // Append the grid container to the card container
       cardContainer.appendChild(gridContainer);
-    } else {
-      console.error("Unexpected data structure in API response:", data);
+    } 
+   
+    else if (categoryId === "drawing") {
+      // Display an icon and text for the "Drawing" category with no videos
+      cardContainer.innerHTML = `
+        <div class="flex flex-col items-center justify-center text-gray-500">
+          <img src="./Icon.png" alt="No Content Icon">
+          <p>Oops! There is no content here.</p>
+        </div>
+      `;
     }
+    
+    
   } catch (error) {
     console.error("Error loading videos:", error);
   }
 };
+
+
+
+
 
 
 // Call the handleCategory function to load video categories
